@@ -7,6 +7,7 @@ const users = [
   { id: 3, name: "Temo", age: 21 }
 ];
 
+
 app.get("/", (req, res) => {
   res.send("Welcome to the server");
 });
@@ -28,7 +29,7 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  const age = req.query.age;
+  const age = req.query.lastName;
 
   if (!age) {
     return res.json(users);
@@ -43,7 +44,7 @@ app.get("/users/admin", (req, res) => {
   res.send("Admin page");
 });
 
-app.get("*", (req, res) => {
+app.get("/*splat", (req, res) => {
   res.status(404).send("Page not found");
 });
 
