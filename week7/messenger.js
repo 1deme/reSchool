@@ -8,11 +8,8 @@ let messages = [
 	{id : 1, from : 1, to : 3, text : "hi"},
 	{id : 2, from : 1, to : 3, text : "how ru"},
 	{id : 3, from : 3, to : 1, text : "good"},
-	{id : 4, from : 2, to : 1, text : "someth"},
 ]
 
-//loadConversation(ID1, ID2)
-//allContacts(userId)
 function addMessage(fromId, toId, text){
     messages.push(
         {
@@ -37,17 +34,30 @@ function deleteMessage(messageId){
 }
 
 function loadConversation(ID1, ID2){
-    let thisConvo = messages.filter(x => (x.from = ID1 && x.to == ID2) || (x.from == ID2 && x.to == ID1))
+    let thisConvo = messages.filter(
+        x => (x.from == ID1 && x.to == ID2) || (x.from == ID2 && x.to == ID1)
+    )
     let nameOne = users.find(x => x.id == ID1).name
     let nameTwo = users.find(x => x.id == ID2).name
     for(let i = 0; i < thisConvo.length; i++){
-        if(thisConvo[i].id == ID1){
-            console.log(nameOne + " : " + thisConvo[i].text)
+        if(thisConvo[i].from == ID1){
+            console.log("                 " + nameOne + " : " + thisConvo[i].text)
         }
-        else{
+        if(thisConvo[i].to == ID1){
             console.log(nameTwo + " : " + thisConvo[i].text)
         }
     }
 }
-console.log("Running")
-loadConversation(2, 1)
+
+function loadContacts(userUd){
+    let contactId = []
+    for(let i = 0; i < messages.length; i++){
+        if(messages[i].from == userUd && contactId.findIndex(x => x == messages[i].to) == -1){
+            contactId.push(messages[i].to)
+        }
+        if(messages[i].to == userUd && contactId.findIndex(x => x == messages[i].from) == -1){
+            contactId.push(messages[i].from)
+        }
+    }
+    return contactId.map(x => users.find(inner => inner.id == x).name)
+}
